@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriasController extends Controller
 {
@@ -36,7 +38,8 @@ class CategoriasController extends Controller
             ]
         ];
         $pageTitle = 'Categorias';
-        return view('categorias.index', compact('pageTitle', 'breadcrumb', 'categorias'));
+        $user = User::findOrFail(Auth::user()->id);
+        return view('categorias.index', compact('pageTitle', 'user', 'breadcrumb', 'categorias'));
     }
 
     /**
@@ -99,8 +102,8 @@ class CategoriasController extends Controller
                     'link' => null
                 ]
             ];
-
-            return view('categorias.show', ['categoria' => $categoria, 'livros' => $livros, 'breadcrumb' => $breadcrumb]);
+            $user = Auth::user();
+            return view('categorias.show', compact('breadcrumb', 'categoria', 'livros', 'user'));
         } catch (ModelNotFoundException $modelNotFoundException) {
             return view('notfound');
         } catch (Exception $exception) {

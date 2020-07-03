@@ -4,8 +4,7 @@
 <div class="bg-primary py-5">
     <div class="container text-center text-white">
         <h1>{{ $pageTitle }}</h1>
-
-        @if (Auth::user()->is_admin == 1)
+        @if (!empty($user) && $user->is_admin == 1)
         <a href="{{config('app.url')}}/categorias/create" class="btn btn-dark">Nova Categoria</a>
         @endif
     </div>

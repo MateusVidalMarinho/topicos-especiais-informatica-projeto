@@ -12,6 +12,7 @@ class Livro extends Model
         'slug',
         'pages',
         'picture',
+        'categoria_id',
         'author',
         'published_at',
     ];

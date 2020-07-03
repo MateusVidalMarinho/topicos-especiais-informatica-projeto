@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Categoria;
 use App\Livro;
+use App\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LivrosController extends Controller
 {
@@ -36,7 +38,8 @@ class LivrosController extends Controller
             ]
         ];
         $pageTitle = 'Livros';
-        return view('livros.index', compact('pageTitle', 'breadcrumb', 'livros'));
+        $user = User::findOrFail(Auth::user()->id);
+        return view('livros.index', compact('pageTitle', 'user', 'breadcrumb', 'livros'));
     }
 
     /**
@@ -48,7 +51,24 @@ class LivrosController extends Controller
     {
         $categorias = Categoria::all();
         $pageTitle = "Cadastrar Livro";
-        return view('livros.create', compact('pageTitle', 'categorias'));
+        $breadcrumb = [
+            [
+                'type' => 'link',
+                'text' => 'Página Inicial',
+                'link' => '/'
+            ],
+            [
+                'type' => 'link',
+                'text' => 'Livros',
+                'link' => '/livros'
+            ],
+            [
+                'type' => 'active',
+                'text' => 'Cadastrar livro',
+                'link' => null
+            ]
+        ];
+        return view('livros.create', compact('pageTitle', 'breadcrumb', 'categorias'));
     }
 
     /**
@@ -61,15 +81,17 @@ class LivrosController extends Controller
     {
         try {
             $livro = Livro::where('slug', $request->slug)->first();
+            var_dump($request->all()['categoria_id']);
             if ($livro == null) {
 
                 Livro::create($request->all());
                 return redirect('livros');
             }
+            var_dump('oia olo');
         } catch (ModelNotFoundException $modelNotFoundException) {
             return view('notfound');
         } catch (Exception $exception) {
-            var_dump('exception');
+            var_dump("exception: " . $exception->getMessage());
         }
     }
 
@@ -96,7 +118,8 @@ class LivrosController extends Controller
                     'link' => null
                 ]
             ];
-            return view('livros.show', compact('livro', 'breadcrumb'));
+            $user = User::find(Auth::user()->id);
+            return view('livros.show', compact('user', 'livro', 'breadcrumb'));
         } catch (ModelNotFoundException $modelNotFoundException) {
             return view('notfound');
         } catch (Exception $exception) {

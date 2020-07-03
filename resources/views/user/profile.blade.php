@@ -9,7 +9,7 @@
         <div class="col-md-3">
 
             <div class="d-flex flex-row-reverse">
-                <form action="{{ route('colecoes.destroy', $colecao->id) }}" method="POST">
+                <form action="{{ route('colecoes.destroy', $colecao->slug) }}" method="POST">
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-sm btn-danger position-relative" style="margin-bottom: -15px;margin-right: -30px; z-index: 2;"><span class="fa fa-trash"></span></button><!-- TODO - Add tooltip -->
