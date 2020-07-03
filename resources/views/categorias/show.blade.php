@@ -4,7 +4,7 @@
 <div class="container my-5">
     <div class="d-flex">
         <h1>{{ $categoria->title }}</h1>
-        @if (Auth::user()->is_admin == 1)
+        @if (!empty($user) && $user->is_admin == 1)
         <a href="{{config('app.url')}}/categorias/{{$categoria->slug}}/edit" class="btn btn-primary">Editar Categoria</a>
         <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST">
             @method('DELETE')

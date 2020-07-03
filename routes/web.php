@@ -19,12 +19,10 @@ Route::resource('/home', 'HomeController');
 Route::get('/perfil', 'HomeController@profile');
 
 Auth::routes();
+
 $router->group(['middleware' => 'auth'], function () {
     Route::get('/logout', 'HomeController@logout');
 });
-
-/* Coleção */
-// TODO - ADICIONAR COLEÇÃO
 
 /* Livros */
 Route::resource('livros', 'LivrosController');

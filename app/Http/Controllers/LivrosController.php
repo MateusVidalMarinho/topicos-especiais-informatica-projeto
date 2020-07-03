@@ -118,7 +118,12 @@ class LivrosController extends Controller
                     'link' => null
                 ]
             ];
-            $user = User::find(Auth::user()->id);
+            if (Auth::user() != null) {
+                $user = User::find(Auth::user()->id);
+                var_dump($user);
+            } else {
+                $user = null;
+            }
             return view('livros.show', compact('user', 'livro', 'breadcrumb'));
         } catch (ModelNotFoundException $modelNotFoundException) {
             return view('notfound');
